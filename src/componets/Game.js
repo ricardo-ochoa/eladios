@@ -10,15 +10,22 @@ import FloatingPlayer from "./FlotingPlayer"
 
 const PALABRAS_VALIDAS = [
   "ELADIOS", "DIOS", "LA", "DI", "DIO",
-  "LADOS", "ADIOS", "ADS", "EL",
-  "ELDOS", "ELDIOS", "LIOS", "LAOS", "ELDOS"
+  "LADOS", "ADIOS", "ADS", "EL", "LADO",
+  "ELDOS", "ELDIOS", "LIOS", "LAOS", "ELDOS", "IOS", "LADIO",
+  "ELADIO"
 ]
 
 const CANCIONES = {
   ELADIOS: {
     src: "/beats/beat2.mp3",
-    title: "El Adiós",
+    title: "El Adiós / Ela Dios",
     artist: "Eladio Carrión",
+    coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
+  },
+  ELADIO: {
+    src: "/beats/beat2.mp3",
+    title: "El Adiós / Ela Dios",
+    artist: "Eladio",
     coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
   },
   DIOS: {
@@ -29,7 +36,7 @@ const CANCIONES = {
   },
   LA: {
     src: "/beats/beat2.mp3",
-    title: "LA",
+    title: "L.A.",
     artist: "Eladio Carrión",
      coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
   },
@@ -41,13 +48,19 @@ const CANCIONES = {
   },
   DIO: {
     src: "/beats/beat2.mp3",
-    title: "DIO",
+    title: "Dió",
     artist: "Eladio Carrión",
      coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
   },
   LADOS: {
     src: "/beats/beat2.mp3",
-    title: "LADOS",
+    title: "LADO(S)",
+    artist: "Eladio Carrión",
+     coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
+  },
+  LADO: {
+    src: "/beats/beat2.mp3",
+    title: "LADO(S)",
     artist: "Eladio Carrión",
      coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
   },
@@ -59,7 +72,7 @@ const CANCIONES = {
   },
   ADS: {
     src: "/beats/beat2.mp3",
-    title: "ADS",
+    title: "Ads",
     artist: "Eladio Carrión",
      coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
   },
@@ -92,6 +105,18 @@ const CANCIONES = {
     title: "LAOS",
     artist: "Eladio Carrión",
      coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
+  },
+  IOS: {
+    src: "/beats/beat2.mp3",
+    title: "iOS",
+    artist: "Eladio Carrión",
+     coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
+  },
+  LADIO: {
+    src: "/beats/beat2.mp3",
+    title: "La dió",
+    artist: "Eladio Carrión",
+     coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
   }
 }
 
@@ -99,11 +124,13 @@ const CANCIONES = {
 export default function Game() {
   const TARGET_WORD = "ELADIOS"
 
-  const [inputLetters, setInputLetters] = useState([]) // orden real
+  const [inputLetters, setInputLetters] = useState([])
   const [palabrasEncontradas, setPalabrasEncontradas] = useState([])
   const [palabraReciente, setPalabraReciente] = useState(null)
   const [palabrasAntes, setPalabrasAntes] = useState([])
   const [cancionActiva, setCancionActiva] = useState(null)
+  const [teclaAnimada, setTeclaAnimada] = useState(null)
+  const [animacionError, setAnimacionError] = useState(false)
 
 
   const handleKeyPress = (key) => {
@@ -113,23 +140,33 @@ export default function Game() {
       const palabra = inputLetters.join("")
       const yaExiste = palabrasEncontradas.includes(palabra)
     
-      setPalabraReciente(palabra) // siempre la última tecleada
-      setPalabrasAntes(palabrasEncontradas) // guarda el listado actual
+      setPalabraReciente(palabra)
+      setPalabrasAntes(palabrasEncontradas)
     
-      if (
-        PALABRAS_VALIDAS.includes(palabra) &&
-        !yaExiste
-      ) {
+      if (PALABRAS_VALIDAS.includes(palabra) && !yaExiste) {
         setPalabrasEncontradas((prev) => [...prev, palabra])
+        setAnimacionError(false)
+      } else if (!PALABRAS_VALIDAS.includes(palabra)) {
+        setAnimacionError(true)
+        setTimeout(() => setAnimacionError(false), 500)
       }
     
       setInputLetters([])
-    } else if (key.length === 1 && /^[A-Z]$/.test(key)) {
+    }
+     else if (key.length === 1 && /^[A-Z]$/.test(key)) {
+      setTeclaAnimada(key)
       setInputLetters((prev) =>
         prev.length < TARGET_WORD.length ? [...prev, key] : prev
       )
     }
   }
+
+  useEffect(() => {
+    if (teclaAnimada) {
+      const timeout = setTimeout(() => setTeclaAnimada(null), 400)
+      return () => clearTimeout(timeout)
+    }
+  }, [teclaAnimada])
 
   const isLetterGuessed = (letter, index) => {
     return inputLetters[index] === letter
@@ -166,7 +203,7 @@ export default function Game() {
 
 
       <div className="flex-1 flex flex-col items-center justify-center">
-      <div className="flex gap-2 mb-4">
+      <div className={`flex gap-2 mb-4 ${animacionError ? 'animate__animated animate__headShake' : ''}`}>
         {TARGET_WORD.split("").map((letra, index) => {
           const guessed = inputLetters.includes(letra)
           const bgColor = guessed ? "bg-green-600" : "bg-gray-800"
@@ -215,15 +252,21 @@ export default function Game() {
             ENTER
           </button>
 
-          {TARGET_WORD.split("").map((key, index) => (
-            <button
-              key={index}
-              onClick={() => handleKeyPress(key)}
-              className={`w-12 h-12 bg-gray-700 rounded flex items-center justify-center text-xl font-bold`}
-            >
-              {key}
-            </button>
-          ))}
+          {TARGET_WORD.split("").map((key, index) => {
+            const isAnimating = teclaAnimada === key
+            const animationClass = isAnimating ? "animate__animated animate__bounceIn" : ""
+
+            return (
+              <button
+                key={index}
+                onClick={() => handleKeyPress(key)}
+                className={`w-12 h-12 bg-gray-700 rounded flex items-center justify-center text-xl font-bold ${animationClass} cursor-pointer hover:bg-gray-800`}
+              >
+                {key}
+              </button>
+            )
+          })}
+
 
           <button
             onClick={() => handleKeyPress("DELETE")}

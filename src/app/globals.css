@@ -85,3 +85,25 @@ body {
 .gradient-shadow.active-shadow::before {
   opacity: 1;
 }
+
+.gradient-shadow-play {
+  position: relative;
+  z-index: 1;
+}
+
+.gradient-shadow-play::before {
+  content: "";
+  position: absolute;
+  inset: -0.001rem;
+  background: linear-gradient(var(--gradient-angle), #25D3C7, green, yellow, orange);
+  animation: rotation 7s linear infinite;
+  filter: blur(5px);
+  border-radius: 1rem;
+  z-index: -1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Esta clase se agregará dinámicamente */
+.gradient-shadow-play.active-gradient-shadow-play::before {
+  opacity: 1;
+}

@@ -23,24 +23,27 @@ export default function ListaDePalabrasEncontradas({
           else if (esNueva) animacion += " animate__fadeInDown"
 
           // Fondo base o verde si está activa
-          const bgColor = estaActiva ? "bg-green-600" : bgColors[index % bgColors.length]
+          const bgColor = estaActiva ? "bg-orange-200" : bgColors[index % bgColors.length]
+          const bgColorsha = estaActiva ? "gradient-shadow-play" : bgColors[index % bgColors.length]
 
           return (
+            <div className={`${estaActiva ? bgColorsha : ""} rounded-full`}>
             <li
               key={`${palabra}-${index}`}
-              onClick={() => onPlay?.(palabra)} // ✅ Toda la caja hace toggle
+              onClick={() => onPlay?.(palabra)}
               className={`cursor-pointer ${animacion} ${bgColor} pl-4 pr-1 py-1 rounded-full text-md flex items-center justify-between`}
             >
-              <span className="font-medium">{palabra}</span>
+              <span className={`font-medium ${estaActiva ? "text-black": ""}`}>{palabra}</span>
 
               {/* Ícono informativo (sin onClick) */}
               <div
                 className="ml-4 bg-black bg-opacity-30 hover:bg-opacity-50 transition rounded-full p-1"
                 title={estaActiva ? "Cerrar reproductor" : `Reproducir ${palabra}`}
               >
-                {estaActiva ? <XIcon size={16} color="orange" /> : <PlayIcon size={16} color="orange" />}
+                {estaActiva ? <XIcon size={16} color="orange" /> : <PlayIcon size={16} color="white" />}
               </div>
             </li>
+            </div>
           )
         })}
       </ul>
