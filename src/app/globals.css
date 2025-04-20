@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* ✅ Elimina el scroll vertical */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+#__next {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.h-dvh {
+  height: 100dvh;
+} 
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -23,4 +42,37 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Declaración de variable animada */
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotation {
+  0% {
+    --gradient-angle: 0deg;
+  }
+  100% {
+    --gradient-angle: 360deg;
+  }
+}
+
+/* Clase para el efecto de sombra animada */
+.gradient-shadow {
+  position: relative;
+  z-index: 1;
+}
+
+.gradient-shadow::before {
+  content: "";
+  position: absolute;
+  inset: -0.001rem;
+  background: linear-gradient(var(--gradient-angle), #25D3C7, green, yellow, orange);
+  animation: rotation 7s linear infinite;
+  filter: blur(20px);
+  z-index: -1;
+  border-radius: 0.5rem;
 }

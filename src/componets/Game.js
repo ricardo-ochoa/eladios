@@ -43,7 +43,7 @@ export default function Game() {
   }, [guessedLetters])
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen bg-black text-white p-4">
+    <div className="h-dvh w-full flex justify-center items-center flex-col py-10 overflow-hidden">
 
       <Player 
       src="/beats/beat2.mp3"
