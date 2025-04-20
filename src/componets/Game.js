@@ -70,8 +70,8 @@ export default function Game() {
         </div>
       </div>
 
-      <div className="w-full max-w-md mb-8">
-        <div className="flex justify-center gap-1 mb-1">
+      <div className="w-full max-w-md">
+        <div className="flex justify-center gap-1">
           <button onClick={() => {}} className="px-2 py-4 bg-gray-700 rounded text-white font-bold w-20">
             ENTER
           </button>
