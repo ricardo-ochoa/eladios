@@ -13,39 +13,40 @@ export default function ListaDePalabrasEncontradas({
   return (
     <div className="mt-4 w-full max-w-md text-white">
       <ul className="flex flex-wrap gap-3">
-        {palabras.map((palabra, index) => {
-          const esRepetida = palabra === palabraReciente && palabrasAntes.includes(palabra)
-          const esNueva = palabra === palabraReciente && !palabrasAntes.includes(palabra)
-          const estaActiva = activa === palabra
+      {palabras.map((palabra, index) => {
+  const esRepetida = palabra === palabraReciente && palabrasAntes.includes(palabra)
+  const esNueva = palabra === palabraReciente && !palabrasAntes.includes(palabra)
+  const estaActiva = activa === palabra
 
-          let animacion = "animate__animated"
-          if (esRepetida) animacion += " animate__bounce"
-          else if (esNueva) animacion += " animate__fadeInDown"
+  let animacion = "animate__animated"
+  if (esRepetida) animacion += " animate__bounce"
+  else if (esNueva) animacion += " animate__fadeInDown"
 
-          // Fondo base o verde si está activa
-          const bgColor = estaActiva ? "bg-orange-200" : bgColors[index % bgColors.length]
-          const bgColorsha = estaActiva ? "gradient-shadow-play" : bgColors[index % bgColors.length]
+  const bgColor = estaActiva ? "bg-orange-200" : bgColors[index % bgColors.length]
+  const bgColorsha = estaActiva ? "gradient-shadow-play" : bgColors[index % bgColors.length]
 
-          return (
-            <div className={`${estaActiva ? bgColorsha : ""} rounded-full`}>
-            <li
-              key={`${palabra}-${index}`}
-              onClick={() => onPlay?.(palabra)}
-              className={`cursor-pointer ${animacion} ${bgColor} pl-4 pr-1 py-1 rounded-full text-md flex items-center justify-between`}
-            >
-              <span className={`font-medium ${estaActiva ? "text-black": ""}`}>{palabra}</span>
+  return (
+    <div
+      key={`${palabra}-${index}`}
+      className={`${estaActiva ? bgColorsha : ""} rounded-full`}
+    >
+      <li
+        onClick={() => onPlay?.(palabra)}
+        className={`cursor-pointer ${animacion} ${bgColor} pl-4 pr-1 py-1 rounded-full text-md flex items-center justify-between`}
+      >
+        <span className={`font-medium ${estaActiva ? "text-black": ""}`}>{palabra}</span>
 
-              {/* Ícono informativo (sin onClick) */}
-              <div
-                className="ml-4 bg-black bg-opacity-30 hover:bg-opacity-50 transition rounded-full p-1"
-                title={estaActiva ? "Cerrar reproductor" : `Reproducir ${palabra}`}
-              >
-                {estaActiva ? <XIcon size={16} color="orange" /> : <PlayIcon size={16} color="white" />}
-              </div>
-            </li>
-            </div>
-          )
-        })}
+        <div
+          className="ml-4 bg-black bg-opacity-30 hover:bg-opacity-50 transition rounded-full p-1"
+          title={estaActiva ? "Cerrar reproductor" : `Reproducir ${palabra}`}
+        >
+          {estaActiva ? <XIcon size={16} color="orange" /> : <PlayIcon size={16} color="white" />}
+        </div>
+      </li>
+    </div>
+  )
+})}
+
       </ul>
     </div>
   )

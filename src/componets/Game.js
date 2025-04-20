@@ -96,13 +96,13 @@ const CANCIONES = {
   },
   LIOS: {
     src: "/beats/beat2.mp3",
-    title: "LIOS",
+    title: "Líos",
     artist: "Eladio Carrión",
      coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
   },
   LAOS: {
     src: "/beats/beat2.mp3",
-    title: "LAOS",
+    title: "Laos",
     artist: "Eladio Carrión",
      coverImage: "https://res.cloudinary.com/dnxxkvpiz/image/upload/v1644786085/yfn42c0ireosigvga9ag.gif"
   },
