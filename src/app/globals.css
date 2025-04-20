@@ -4,7 +4,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* ✅ Elimina el scroll vertical */
+  overflow: hidden;
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
 }
@@ -73,6 +73,15 @@ body {
   background: linear-gradient(var(--gradient-angle), #25D3C7, green, yellow, orange);
   animation: rotation 7s linear infinite;
   filter: blur(20px);
-  z-index: -1;
   border-radius: 0.5rem;
+  z-index: -1;
+
+  /* Transición suave */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Esta clase se agregará dinámicamente */
+.gradient-shadow.active-shadow::before {
+  opacity: 1;
 }

@@ -1,24 +1,59 @@
 "use client"
 
+import 'animate.css';
 import { useState, useRef, useEffect } from "react"
 import { Pause, Play } from "lucide-react"
 
-export default function Player({ src, title, artist, coverImage }) {
+export default function Player({ src, title, artist, coverImage, autoPlay = false }) {
   const [isPlaying, setIsPlaying] = useState(false)
+  const [showGradient, setShowGradient] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
   const [showFullProgress, setShowFullProgress] = useState(false)
   const audioRef = useRef(null)
 
+  // Autoplay y cleanup
+  useEffect(() => {
+    if (autoPlay && audioRef.current) {
+      const playPromise = audioRef.current.play()
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setIsPlaying(true))
+          .catch(() => {})
+      }
+    }
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause()
+        audioRef.current.currentTime = 0
+        setIsPlaying(false)
+        setShowGradient(false)
+      }
+    }
+  }, [src, autoPlay])
+
+  // Delay para activar el gradient-shadow
+  useEffect(() => {
+    let timeout
+    if (isPlaying) {
+      timeout = setTimeout(() => setShowGradient(true), 100)
+    } else {
+      setShowGradient(false)
+    }
+    return () => clearTimeout(timeout)
+  }, [isPlaying])
+
   const togglePlayPause = (e) => {
-    e.stopPropagation() // Prevenir que dispare showFullProgress
+    e.stopPropagation()
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause()
+        setIsPlaying(false)
       } else {
         audioRef.current.play()
+        setIsPlaying(true)
       }
-      setIsPlaying(!isPlaying)
     }
   }
 
@@ -41,22 +76,20 @@ export default function Player({ src, title, artist, coverImage }) {
   }
 
   return (
-    <div className="gradient-shadow relative max-w-md w-full">
+    <div className={`gradient-shadow ${showGradient ? "active-shadow" : ""} relative max-w-md w-[90%] transition-all`}>
       <div
         onClick={handleClickPlayer}
         className="flex flex-col items-center bg-gray-950 text-white p-4 rounded-md w-full max-w-md cursor-pointer"
       >
         {/* Barra inferior delgada */}
-        {
-          !showFullProgress && (
-        <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-800 rounded-b overflow-hidden">
-          <div
-            className="h-full bg-green-500"
-            style={{ width: `${(currentTime / duration) * 100 || 0}%` }}
-          ></div>
-        </div>
-          )
-        }
+        {!showFullProgress && (
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-800 rounded-b overflow-hidden">
+            <div
+              className="h-full bg-green-500"
+              style={{ width: `${(currentTime / duration) * 100 || 0}%` }}
+            ></div>
+          </div>
+        )}
 
         <div className="flex items-center w-full z-10">
           <div className="h-15 w-15 relative mr-3">
