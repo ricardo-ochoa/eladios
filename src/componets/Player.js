@@ -76,7 +76,7 @@ export default function Player({ src, title, artist, coverImage, autoPlay = fals
   }
 
   return (
-    <div className={`gradient-shadow ${showGradient ? "active-shadow" : ""} relative max-w-md w-[90%] transition-all`}>
+    <div className={`gradient-shadow ${showGradient ? "active-shadow" : ""} transition-all`}>
       <div
         onClick={handleClickPlayer}
         className="flex flex-col items-center bg-gray-950 text-white p-4 rounded-md w-full max-w-md cursor-pointer"

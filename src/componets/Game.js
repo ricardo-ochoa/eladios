@@ -5,6 +5,7 @@ import { SkipBackIcon as Backspace } from "lucide-react"
 import Player from "./Player"
 import ListaDePalabrasEncontradas from "./ListaDePalabrasEncontradas"
 import 'animate.css';
+import FloatingPlayer from "./FlotingPlayer"
 
 
 const PALABRAS_VALIDAS = [
@@ -153,17 +154,16 @@ export default function Game() {
     <div className="h-dvh w-full flex justify-center items-center flex-col py-10 overflow-hidden">
 
     {cancionActiva && (
-      <div className="animate__animated animate__fadeInDown max-w-md w-full mb-4">
-<Player
-  src={cancionActiva.src}
-  title={cancionActiva.title}
-  artist={cancionActiva.artist}
-  coverImage={cancionActiva.coverImage}
-  autoPlay={true}
+      <div className="animate__animated animate__fadeInDown max-w-md w-full">
+<FloatingPlayer
+  cancionActiva={cancionActiva}
+  onClose={() => setCancionActiva(null)}
 />
+
 
       </div>
     )}
+
 
       <div className="flex-1 flex flex-col items-center justify-center">
       <div className="flex gap-2 mb-4">
